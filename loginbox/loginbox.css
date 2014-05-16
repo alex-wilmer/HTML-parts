@@ -1,0 +1,18 @@
+#inner {  
+    margin-left: 50%;
+    position:relative;
+    right:110px;
+    top:100px; }
+#inner input  {
+	display: block;
+    border:solid 1px #e3e3e3;
+    padding: 0px 10px; }
+.login_button {
+	margin-top: 10px;
+    height:30px;
+    position:relative;
+    left:80px;
+    cursor:pointer;
+    border-radius:5px; }
+.login_button:hover {
+    background-color:Silver; }
