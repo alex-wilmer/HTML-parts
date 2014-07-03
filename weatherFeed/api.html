@@ -3,9 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<style type="text/css">
+	[ng\:cloak], [ng-cloak], .ng-cloak {
+	  display: none !important;
+	}
+	</style>
 </head>
 <body ng-app="ngAPI">
-<div ng-controller="APIController">
+<div ng-controller="APIController" ng-cloak>
 
 <input ng-model="city" type="text">
 <button ng-click="getWeather(city)" 
