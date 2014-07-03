@@ -34,7 +34,7 @@ ngAPI.controller('APIController', function ($scope, $http) {
 	$scope.tomorrow = getDay(date.getDay()+1);
  	$scope.city = 'Toronto';
  	$scope.getWeather = function(city) {
-	  	$http.get('http://api.worldweatheronline.com/free/v1/weather.ashx?q=' + $scope.city + '&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c').success(function(data) {
+	  	$http.get('https://api.worldweatheronline.com/free/v1/weather.ashx?q=' + $scope.city + '&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c').success(function(data) {
 	    $scope.api = data;
 	    });
 	}
