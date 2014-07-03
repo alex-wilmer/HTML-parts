@@ -3,11 +3,36 @@
 }
 .ngForecast {
 	font-size: 12px;
-	width:400px;
+	width:340px;
+}
+.city {
+	border-bottom: 2px solid green;
+	color:green;
 }
 .wi-today {
-	font-size: 3em;
+	font-size: 4.5em;
 	color: green;
 	float:left;
 	padding-right: 10px;
+}
+.wi-tomorrow {
+	font-size: 2em;
+	color: blue;
+	padding: 5px;
+}
+.wi-longterm {
+	color:blue;
+	font-size: 1.2em;
+}
+.longterm {
+	display: inline-block;
+	padding: 10px;
+	line-height: 1.5em;
+}
+.temp-today {
+	color: blue;
+	font-size: 1.5em;
+}
+.degree {
+	font-size: 1.5em;
 }

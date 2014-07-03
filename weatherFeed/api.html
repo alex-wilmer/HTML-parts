@@ -10,30 +10,33 @@
 <div class="ngForecast wi" ng-controller="APIController" ng-cloak>
 <form ng-submit="getForecast(city)">
 <input ng-model="city" type="text">
-<input type="submit">Get forecast!</input>
+<input type="submit"> Get forecast!</input>
 </form>
 
 <!-- CITY NAME -->
-<h1 class="wi">{{api.request[0].query}}</h1><br>
+<h1 class="city"><i class="wi wi-cloudy"></i> {{api.request[0].query}}</h1><br>
 <!-- MAIN ICON -->
-<i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" class="wi wi-today {{code.day_icon}}"></i>
+<i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" 
+   class="wi wi-today {{code.day_icon}}"></i>
 
-	<b>Today</b> {{getDay(date.getDay())}}
+	<b>Today,</b> {{getDay(date.getDay())}}
 	{{getMonth(date.getMonth())}} {{date.getDate()}}, {{date.getFullYear()}} 
 	<br>
-	<h3>{{api.current_condition[0].temp_C}}&#176;C / 
-	    {{api.current_condition[0].temp_F}}&#176;F</h3><br>
+	<h3><span class="temp-today">{{api.current_condition[0].temp_C}}</span>
+		<span class="degree">&#176;</span>C / 
+	    <span class="temp-today">{{api.current_condition[0].temp_F}}</span>
+	    <span class="degree">&#176;</span>F</h3><br>
 
-	<i ng-repeat="code in codes.condition | filter: {code:api.weather[1].weatherCode}" class="wi {{code.day_icon}}"></i>
+	<i ng-repeat="code in codes.condition | filter: {code:api.weather[1].weatherCode}" 
+	   class="wi wi-tomorrow {{code.day_icon}}"></i>
 	Tomorrow, {{days[1].name}}<br>
 	{{days[1].c}}&#176;C / 
 	{{days[1].f}}&#176;F<br><br> 
 	
-	<div ng-repeat="i in range(number) track by $index">
-		<i ng-repeat="code in codes.condition | filter: {code:api.weather[$index].weatherCode}" class="wi {{code.day_icon}}"></i>
-
-		{{days[$index+2].c}}&#176;C / 
-		{{days[$index+2].f}}&#176;F
+	<div class="longterm" ng-repeat="i in range(number) track by $index">
+		{{days[$index+2].c}}&#176;C
+		<i ng-repeat="code in codes.condition | filter: {code:api.weather[$index].weatherCode}" 
+		   class="wi wi-longterm {{code.day_icon}}"></i><br>
 		{{days[$index+2].name}}<br>
 		<span ng-hide="true">{{$index+1}}</span>
 	</div>
