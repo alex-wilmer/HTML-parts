@@ -1,9 +1,10 @@
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
-.ngForecast {
+#ngForecast {
 	font-size: 12px;
 	width:340px;
+	opacity: 0;
 }
 .city {
 	border-bottom: 2px solid green;

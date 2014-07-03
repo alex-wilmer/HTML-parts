@@ -13,7 +13,7 @@ ngAPI.controller('APIController', function ($scope, $http) {
 		  	$scope.days = [];
 		  	for (var i=1;i<5;i++) {
 		  		$scope.days[i] = {
-		  			name: $scope.getDay($scope.date.getDay()+i),
+		  			name: $scope.DayString($scope.date.getDay()+i),
 		  			c: Math.floor(avgTemp(
 			  				api.data.weather[i].tempMinC, 
 			  				api.data.weather[i].tempMaxC)),
@@ -29,16 +29,11 @@ ngAPI.controller('APIController', function ($scope, $http) {
 
 	//UTILITY
 	$scope.number = 3;
-	$scope.range = function(num) {
+	$scope.Range = function(num) {
 	    return new Array(num);   
 	};
 
-	function avgTemp (min, max) {
-		min = parseInt(min); max = parseInt(max);
-		return ((min + max) / 2) + 1;
-	}
-
-	$scope.getDay = function (number) {
+	$scope.DayString = function (number) {
 		if (number == 0 || number == 7) { return 'Sunday'; }
 		if (number == 1 || number == 8) { return 'Monday'; }
 		if (number == 2 || number == 9) { return 'Tuesday'; }
@@ -48,7 +43,7 @@ ngAPI.controller('APIController', function ($scope, $http) {
 		if (number == 6) { return 'Saturday'; }
 	}
 
-	$scope.getMonth = function (number) {
+	$scope.MonthString = function (number) {
 		if (number == 0) { return 'January'; }
 		if (number == 1) { return 'February'; }
 		if (number == 2) { return 'March'; }
@@ -61,5 +56,10 @@ ngAPI.controller('APIController', function ($scope, $http) {
 		if (number == 9) { return 'October'; }
 		if (number == 10) { return 'November'; }
 		if (number == 11) { return 'December'; }
+	}
+
+	function avgTemp (min, max) {
+		min = parseInt(min); max = parseInt(max);
+		return ((min + max) / 2) + 1;
 	}
 });

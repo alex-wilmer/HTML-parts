@@ -7,7 +7,7 @@
 	<link href="css/weather-icons.css" rel="stylesheet" type="text/css">
 </head>
 <body ng-app="ngAPI">
-<div class="ngForecast wi" ng-controller="APIController" ng-cloak>
+<div id="ngForecast" class="wi" ng-controller="APIController" ng-cloak>
 <form ng-submit="getForecast(city)">
 <input ng-model="city" type="text">
 <input type="submit"> Get forecast!</input>
@@ -19,8 +19,8 @@
 <i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" 
    class="wi wi-today {{code.day_icon}}"></i>
 
-	<b>Today,</b> {{getDay(date.getDay())}}
-	{{getMonth(date.getMonth())}} {{date.getDate()}}, {{date.getFullYear()}} 
+	<b>Today,</b> {{DayString(date.getDay())}}
+	{{MonthString(date.getMonth())}} {{date.getDate()}}, {{date.getFullYear()}} 
 	<br>
 	<h3><span class="temp-today">{{api.current_condition[0].temp_C}}</span>
 		<span class="degree">&#176;</span>C / 
@@ -33,7 +33,7 @@
 	{{days[1].c}}&#176;C / 
 	{{days[1].f}}&#176;F<br><br> 
 	
-	<div class="longterm" ng-repeat="i in range(number) track by $index">
+	<div class="longterm" ng-repeat="i in Range(number) track by $index">
 		{{days[$index+2].c}}&#176;C
 		<i ng-repeat="code in codes.condition | filter: {code:api.weather[$index].weatherCode}" 
 		   class="wi wi-longterm {{code.day_icon}}"></i><br>
@@ -42,7 +42,13 @@
 	</div>
 
 </div>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 <script src="api.js"></script>
+<script>
+$(document).ready(function() {
+	$("#ngForecast").delay(500).animate({"opacity": "1"}, 500);
+});
+</script>
 </body>
 </html>
