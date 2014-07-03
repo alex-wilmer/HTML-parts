@@ -19,8 +19,25 @@
 	<h3>{{api.data.current_condition[0].temp_C}}&#176;C / 
 	    {{api.data.current_condition[0].temp_F}}&#176;F</h3><br>
 
-	<img ng-src="{{api.data.weather[1].weatherIconUrl[0].value}}" style="width:12%;">
-	Tomorrow, {{tomorrow}}
+	<img ng-src="{{api.data.weather[1].weatherIconUrl[0].value}}" style="width:6%;">
+	Tomorrow, {{tomorrow}}<br>
+	{{tomorrowAvgC}}&#176;C / 
+	{{tomorrowAvgF}}&#176;F<br><br>
+
+	<img ng-src="{{api.data.weather[2].weatherIconUrl[0].value}}" style="width:6%;">
+	{{dayAfterTomorrow}}<br>
+	{{dayAfterAvgC}}&#176;C / 
+	{{dayAfterAvgF}}&#176;F<br><br>
+
+	<img ng-src="{{api.data.weather[3].weatherIconUrl[0].value}}" style="width:6%;">
+	{{twoDaysAfterTomorrow}}<br>
+	{{twoDaysAfterAvgC}}&#176;C / 
+	{{twoDaysAfterAvgF}}&#176;F<br><br>
+
+	<img ng-src="{{api.data.weather[4].weatherIconUrl[0].value}}" style="width:6%;">
+	{{threeDaysAfterTomorrow}}<br>
+	{{threeDaysAfterAvgC}}&#176;C / 
+	{{threeDaysAfterAvgF}}&#176;F<br><br>
 
 
 </div>
@@ -32,20 +49,41 @@ ngAPI.controller('APIController', function ($scope, $http) {
 	date = new Date();
 	$scope.today = getDay(date.getDay());
 	$scope.tomorrow = getDay(date.getDay()+1);
+	$scope.dayAfterTomorrow = getDay(date.getDay()+2);
+	$scope.twoDaysAfterTomorrow = getDay(date.getDay()+3);
+	$scope.threeDaysAfterTomorrow = getDay(date.getDay()+4);
  	$scope.city = 'Toronto';
  	$scope.getWeather = function(city) {
-	  	$http.get('https://api.worldweatheronline.com/free/v1/weather.ashx?q=' + $scope.city + '&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c').success(function(data) {
-	    $scope.api = data;
+	  	$http.get('https://api.worldweatheronline.com/free/v1/weather.ashx?q=' + $scope.city + '&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c').success(function(api) {
+	  	$scope.tomorrowAvgC = Math.floor(avgTemp(api.data.weather[1].tempMinC, api.data.weather[1].tempMaxC));
+	  	$scope.tomorrowAvgF = Math.floor(avgTemp(api.data.weather[1].tempMinF, api.data.weather[1].tempMaxF));
+	  	$scope.dayAfterAvgC = Math.floor(avgTemp(api.data.weather[2].tempMinC, api.data.weather[2].tempMaxC));
+	  	$scope.dayAfterAvgF = Math.floor(avgTemp(api.data.weather[2].tempMinF, api.data.weather[2].tempMaxF));
+	  	$scope.twoDaysAfterAvgC = Math.floor(avgTemp(api.data.weather[3].tempMinC, api.data.weather[3].tempMaxC));
+	  	$scope.twoDaysAfterAvgF = Math.floor(avgTemp(api.data.weather[3].tempMinF, api.data.weather[3].tempMaxF));
+	  	$scope.threeDaysAfterAvgC = Math.floor(avgTemp(api.data.weather[4].tempMinC, api.data.weather[4].tempMaxC));
+	  	$scope.threeDaysAfterAvgF = Math.floor(avgTemp(api.data.weather[4].tempMinF, api.data.weather[4].tempMaxF));
+
+	    $scope.api = api;
 	    });
 	}
 	$scope.getWeather($scope.city);
 
+	function avgTemp (min, max) {
+		min = parseInt(min);
+		max = parseInt(max);
+		return (min + max) / 2;
+	}
+
 	function getDay(number) {
 		if (number == 0 || 
 			number == 7) { return 'Sunday'; }
-		if (number == 1) { return 'Monday'; }
-		if (number == 2) { return 'Tuesday'; }
-		if (number == 3) { return 'Wednesday'; }
+		if (number == 1 ||
+			number == 8) { return 'Monday'; }
+		if (number == 2 ||
+			number == 9) { return 'Tuesday'; }
+		if (number == 3 ||
+			number == 10) { return 'Wednesday'; }
 		if (number == 4) { return 'Thursday'; }
 		if (number == 5) { return 'Friday'; }
 		if (number == 6) { return 'Saturday'; }
