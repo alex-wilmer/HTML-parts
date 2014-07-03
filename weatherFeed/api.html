@@ -7,43 +7,40 @@
 	[ng\:cloak], [ng-cloak], .ng-cloak {
 	  display: none !important;
 	}
+	.weather-feed {
+		width:400px;
+	}
 	</style>
 </head>
 <body ng-app="ngAPI">
-<div ng-controller="APIController" ng-cloak>
+<div class="weather-feed" ng-controller="APIController" ng-cloak>
 
 <input ng-model="city" type="text">
-<button ng-click="getWeather(city)" 
-        type="submit">Check the weather in {{city}}</button>
-<!-- CITY -->
-<h1>{{api.data.request[0].query}}</h1>
-<img ng-src="{{api.data.current_condition[0].weatherIconUrl[0].value}}"
+<button ng-click="getWeather(city)">Check the weather in {{city}}</button>
+
+<!-- CITY NAME -->
+<h1>{{api.request[0].query}}</h1>
+<!-- MAIN ICON -->
+<img ng-src="{{api.current_condition[0].weatherIconUrl[0].value}}"
      style="float:left;padding-right:8px;">
 	
-	Today {{today}}<br>
-	<h3>{{api.data.current_condition[0].temp_C}}&#176;C / 
-	    {{api.data.current_condition[0].temp_F}}&#176;F</h3><br>
+	Today {{getDay(date.getDay())}}<br>
+	<h3>{{api.current_condition[0].temp_C}}&#176;C / 
+	    {{api.current_condition[0].temp_F}}&#176;F</h3><br>
 
-	<img ng-src="{{api.data.weather[1].weatherIconUrl[0].value}}" style="width:6%;">
-	Tomorrow, {{tomorrow}}<br>
-	{{tomorrowAvgC}}&#176;C / 
-	{{tomorrowAvgF}}&#176;F<br><br>
-
-	<img ng-src="{{api.data.weather[2].weatherIconUrl[0].value}}" style="width:6%;">
-	{{dayAfterTomorrow}}<br>
-	{{dayAfterAvgC}}&#176;C / 
-	{{dayAfterAvgF}}&#176;F<br><br>
-
-	<img ng-src="{{api.data.weather[3].weatherIconUrl[0].value}}" style="width:6%;">
-	{{twoDaysAfterTomorrow}}<br>
-	{{twoDaysAfterAvgC}}&#176;C / 
-	{{twoDaysAfterAvgF}}&#176;F<br><br>
-
-	<img ng-src="{{api.data.weather[4].weatherIconUrl[0].value}}" style="width:6%;">
-	{{threeDaysAfterTomorrow}}<br>
-	{{threeDaysAfterAvgC}}&#176;C / 
-	{{threeDaysAfterAvgF}}&#176;F<br><br>
-
+    <img ng-src="{{api.weather[1].weatherIconUrl[0].value}}" style="width:6%;">
+	Tomorrow, {{days[1].name}}<br>
+	{{days[1].c}}&#176;C / 
+	{{days[1].f}}&#176;F<br><br> 
+	
+	<div ng-repeat="i in range(number) track by $index">
+		<img ng-src="{{api.weather[$index].weatherIconUrl[0].value}}" 
+		     style="width:6%;">
+		{{days[$index+2].c}}&#176;C / 
+		{{days[$index+2].f}}&#176;F
+		{{days[$index+2].name}}<br>
+		<span ng-hide="true">{{$index+1}}</span>
+	</div>
 
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
@@ -51,36 +48,45 @@
 var ngAPI = angular.module('ngAPI', []);
 
 ngAPI.controller('APIController', function ($scope, $http) {
-	date = new Date();
-	$scope.today = getDay(date.getDay());
-	$scope.tomorrow = getDay(date.getDay()+1);
-	$scope.dayAfterTomorrow = getDay(date.getDay()+2);
-	$scope.twoDaysAfterTomorrow = getDay(date.getDay()+3);
-	$scope.threeDaysAfterTomorrow = getDay(date.getDay()+4);
+	$scope.date = new Date();
+	
  	$scope.city = 'Toronto';
- 	$scope.getWeather = function(city) {
-	  	$http.get('https://api.worldweatheronline.com/free/v1/weather.ashx?q=' + $scope.city + '&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c').success(function(api) {
-	  	$scope.tomorrowAvgC = Math.floor(avgTemp(api.data.weather[1].tempMinC, api.data.weather[1].tempMaxC));
-	  	$scope.tomorrowAvgF = Math.floor(avgTemp(api.data.weather[1].tempMinF, api.data.weather[1].tempMaxF));
-	  	$scope.dayAfterAvgC = Math.floor(avgTemp(api.data.weather[2].tempMinC, api.data.weather[2].tempMaxC));
-	  	$scope.dayAfterAvgF = Math.floor(avgTemp(api.data.weather[2].tempMinF, api.data.weather[2].tempMaxF));
-	  	$scope.twoDaysAfterAvgC = Math.floor(avgTemp(api.data.weather[3].tempMinC, api.data.weather[3].tempMaxC));
-	  	$scope.twoDaysAfterAvgF = Math.floor(avgTemp(api.data.weather[3].tempMinF, api.data.weather[3].tempMaxF));
-	  	$scope.threeDaysAfterAvgC = Math.floor(avgTemp(api.data.weather[4].tempMinC, api.data.weather[4].tempMaxC));
-	  	$scope.threeDaysAfterAvgF = Math.floor(avgTemp(api.data.weather[4].tempMinF, api.data.weather[4].tempMaxF));
-
-	    $scope.api = api;
+ 	$scope.getWeather = function (city) {
+	  	$http
+	  	.get('https://api.worldweatheronline.com/free/v1/weather.ashx?q=' 
+	  		+ $scope.city + 
+	  		'&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c')
+	  	.success(function(api) {
+	  	$scope.days = [];
+	  	for (var i=1;i<5;i++) {
+	  		$scope.days[i] = {
+	  			name: $scope.getDay($scope.date.getDay()+i),
+	  			c: Math.floor(avgTemp(
+		  				api.data.weather[i].tempMinC, 
+		  				api.data.weather[i].tempMaxC)),
+	  			f: Math.floor(avgTemp(
+				  		api.data.weather[i].tempMinF, 
+				  		api.data.weather[i].tempMaxF))
+	  		}
+	  	}
+	    $scope.api = api.data;
 	    });
 	}
 	$scope.getWeather($scope.city);
 
+	//UTILITY
+	$scope.number = 3;
+	$scope.range = function(num) {
+	    return new Array(num);   
+	};
+
 	function avgTemp (min, max) {
 		min = parseInt(min);
 		max = parseInt(max);
-		return (min + max) / 2;
+		return ((min + max) / 2) + 1;
 	}
 
-	function getDay(number) {
+	$scope.getDay = function (number) {
 		if (number == 0 || 
 			number == 7) { return 'Sunday'; }
 		if (number == 1 ||
