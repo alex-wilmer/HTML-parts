@@ -5,17 +5,18 @@
 	<title>Angular Forecast</title>
 	<link href="api.css" rel="stylesheet" type="text/css">
 	<link href="css/weather-icons.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 </head>
 <body ng-app="ngAPI">
-<div id="ngForecast" class="wi" ng-controller="APIController" ng-cloak>
-	<form ng-submit="getForecast(city)">
-		<input ng-model="city" type="text">
-		<input type="submit"> Get forecast!</input>
+<div id="ngForecast" class="wi" ng-controller="APIController" >
+	<form ng-submit="getForecast(city)" ng-cloak>
+		<input ng-model="city" type="text" placeholder="enter a city" ng-focus="city=''">
+		<input type="submit" value="Get forecast!">
 	</form>
 		<!-- CITY NAME -->
-	<span class="city"><i class="wi wi-cloudy"></i> {{api.request[0].query}}</span><br>
+	<span class="city" ng-cloak><i class="wi wi-cloudy"></i> {{api.request[0].query}}</span><br>
 		<!-- MAIN ICON -->
-	<div class="today">
+	<div class="today" ng-cloak>
 		<i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" 
 	   	   class="wi wi-today {{code.day_icon}}"></i>
 		<b>Today,</b> {{DayString(date.getDay())}}
@@ -32,7 +33,7 @@
 		</div>
 	</div>
 
-	<div class="tomorrow">
+	<div class="tomorrow" ng-cloak>
 		<i ng-repeat="code in codes.condition | filter: {code:api.weather[1].weatherCode}" 
 		   class="wi wi-tomorrow {{code.day_icon}}"></i>
 		Tomorrow, {{days[1].name}}
@@ -42,7 +43,7 @@
 		</div>
 	</div>
 	
-	<div class="longterm" ng-repeat="i in Range(number) track by $index">
+	<div class="longterm" ng-repeat="i in Range(number) track by $index" ng-cloak>
 		{{days[$index+2].c}}&#176;C
 		<i ng-repeat="code in codes.condition | filter: {code:api.weather[$index].weatherCode}" 
 		   class="wi wi-longterm {{code.day_icon}}"></i><br>
@@ -52,7 +53,6 @@
 
 </div>
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 <script src="api.js"></script>
 <script>
 $(document).ready(function() {
