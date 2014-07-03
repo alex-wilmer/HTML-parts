@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body ng-app="ngAPI">
+<div ng-controller="APIController">
+
+<input ng-model="city" type="text">
+<button ng-click="getWeather(city)" 
+        type="submit">Check the weather in {{city}}</button>
+<!-- CITY -->
+<h1>{{api.data.request[0].query}}</h1>
+<img ng-src="{{api.data.current_condition[0].weatherIconUrl[0].value}}"
+     style="float:left;padding-right:8px;">
+	
+	Today {{today}}<br>
+	<h3>{{api.data.current_condition[0].temp_C}}&#176;C / 
+	    {{api.data.current_condition[0].temp_F}}&#176;F</h3><br>
+
+	<img ng-src="{{api.data.weather[1].weatherIconUrl[0].value}}" style="width:12%;">
+	Tomorrow, {{tomorrow}}
+
+
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+<script>
+var ngAPI = angular.module('ngAPI', []);
+
+ngAPI.controller('APIController', function ($scope, $http) {
+	date = new Date();
+	$scope.today = getDay(date.getDay());
+	$scope.tomorrow = getDay(date.getDay()+1);
+ 	$scope.city = 'Toronto';
+ 	$scope.getWeather = function(city) {
+	  	$http.get('http://api.worldweatheronline.com/free/v1/weather.ashx?q=' + $scope.city + '&format=json&num_of_days=5&key=707a8a94e3eb000ed78b12dff3007be26732de7c').success(function(data) {
+	    $scope.api = data;
+	    });
+	}
+	$scope.getWeather($scope.city);
+
+	function getDay(number) {
+		if (number == 0 || 
+			number == 7) { return 'Sunday'; }
+		if (number == 1) { return 'Monday'; }
+		if (number == 2) { return 'Tuesday'; }
+		if (number == 3) { return 'Wednesday'; }
+		if (number == 4) { return 'Thursday'; }
+		if (number == 5) { return 'Friday'; }
+		if (number == 6) { return 'Saturday'; }
+	}
+});
+
+</script>
+</body>
+</html>
