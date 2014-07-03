@@ -3,37 +3,68 @@
 }
 #ngForecast {
 	font-size: 12px;
-	width:340px;
 	opacity: 0;
 }
 .city {
 	border-bottom: 2px solid green;
-	color:green;
+	color: #55924d;
+	font-size: 24px;
+	display: block;
+	margin: 5px 0px;
+}
+.today {
+	margin-bottom: -15px;
 }
 .wi-today {
-	font-size: 4.5em;
-	color: green;
+	font-size: 5.5em;
+	color: #55924d;
 	float:left;
 	padding-right: 10px;
+	padding-top: 10px;
+}
+.tomorrow {
+	padding-top: 25px;
+}
+.tomorrow .temperature {
+	color:gray;
 }
 .wi-tomorrow {
+	float: left;
 	font-size: 2em;
-	color: blue;
-	padding: 5px;
-}
-.wi-longterm {
-	color:blue;
-	font-size: 1.2em;
+	color: #034ea2;
+	padding: 2px 8px;
 }
 .longterm {
+	font-size: 1.2em;
 	display: inline-block;
-	padding: 10px;
+	padding: 5px 10px;
 	line-height: 1.5em;
+	padding-top: 20px;
+	position: relative;
+	top: -25px;
+	color: Gray;
+}
+.wi-longterm {
+	color: #034ea2;
+	font-size: 1.4em;
+	padding: 5px;
+}
+.temperature {
+	padding:5px;
 }
 .temp-today {
-	color: blue;
+	color: #034ea2;
 	font-size: 1.5em;
+	font-weight: bold;
 }
 .degree {
 	font-size: 1.5em;
+}
+.letter {
+	font-weight: bold;
+}
+.slash {
+	font-size: 1.4em;
+	font-weight: lighter;
+	color: lightGray;
 }

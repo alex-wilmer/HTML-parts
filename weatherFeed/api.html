@@ -8,30 +8,39 @@
 </head>
 <body ng-app="ngAPI">
 <div id="ngForecast" class="wi" ng-controller="APIController" ng-cloak>
-<form ng-submit="getForecast(city)">
-<input ng-model="city" type="text">
-<input type="submit"> Get forecast!</input>
-</form>
+	<form ng-submit="getForecast(city)">
+		<input ng-model="city" type="text">
+		<input type="submit"> Get forecast!</input>
+	</form>
+		<!-- CITY NAME -->
+	<span class="city"><i class="wi wi-cloudy"></i> {{api.request[0].query}}</span><br>
+		<!-- MAIN ICON -->
+	<div class="today">
+		<i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" 
+	   	   class="wi wi-today {{code.day_icon}}"></i>
+		<b>Today,</b> {{DayString(date.getDay())}}
+		{{MonthString(date.getMonth())}} {{date.getDate()}}, {{date.getFullYear()}} 
+		<br>
+		<div class="temperature">
+			<span class="temp-today">{{api.current_condition[0].temp_C}}</span>
+			<span class="degree">&#176;</span>
+			<span class="letter">C</span>
+			<span class="slash">/</span>
+		    <span class="temp-today">{{api.current_condition[0].temp_F}}</span>
+		    <span class="degree">&#176;</span>
+		    <span class="letter">F</span>
+		</div>
+	</div>
 
-<!-- CITY NAME -->
-<h1 class="city"><i class="wi wi-cloudy"></i> {{api.request[0].query}}</h1><br>
-<!-- MAIN ICON -->
-<i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" 
-   class="wi wi-today {{code.day_icon}}"></i>
-
-	<b>Today,</b> {{DayString(date.getDay())}}
-	{{MonthString(date.getMonth())}} {{date.getDate()}}, {{date.getFullYear()}} 
-	<br>
-	<h3><span class="temp-today">{{api.current_condition[0].temp_C}}</span>
-		<span class="degree">&#176;</span>C / 
-	    <span class="temp-today">{{api.current_condition[0].temp_F}}</span>
-	    <span class="degree">&#176;</span>F</h3><br>
-
-	<i ng-repeat="code in codes.condition | filter: {code:api.weather[1].weatherCode}" 
-	   class="wi wi-tomorrow {{code.day_icon}}"></i>
-	Tomorrow, {{days[1].name}}<br>
-	{{days[1].c}}&#176;C / 
-	{{days[1].f}}&#176;F<br><br> 
+	<div class="tomorrow">
+		<i ng-repeat="code in codes.condition | filter: {code:api.weather[1].weatherCode}" 
+		   class="wi wi-tomorrow {{code.day_icon}}"></i>
+		Tomorrow, {{days[1].name}}
+		<div class="temperature">
+			{{days[1].c}}&#176;C / 
+			{{days[1].f}}&#176;F<br><br> 
+		</div>
+	</div>
 	
 	<div class="longterm" ng-repeat="i in Range(number) track by $index">
 		{{days[$index+2].c}}&#176;C
@@ -47,7 +56,7 @@
 <script src="api.js"></script>
 <script>
 $(document).ready(function() {
-	$("#ngForecast").delay(500).animate({"opacity": "1"}, 500);
+	$("#ngForecast").delay(500).animate({"opacity": "1"}, 630);
 });
 </script>
 </body>
