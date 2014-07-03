@@ -1,6 +1,13 @@
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
-.weather-feed {
+.ngForecast {
+	font-size: 12px;
 	width:400px;
+}
+.wi-today {
+	font-size: 3em;
+	color: green;
+	float:left;
+	padding-right: 10px;
 }

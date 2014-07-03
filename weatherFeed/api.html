@@ -2,33 +2,36 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Angular Forecast</title>
 	<link href="api.css" rel="stylesheet" type="text/css">
+	<link href="css/weather-icons.css" rel="stylesheet" type="text/css">
 </head>
 <body ng-app="ngAPI">
-<div class="weather-feed" ng-controller="APIController" ng-cloak>
-
+<div class="ngForecast wi" ng-controller="APIController" ng-cloak>
+<form ng-submit="getForecast(city)">
 <input ng-model="city" type="text">
-<button ng-click="getWeather(city)">Check the weather in {{city}}</button>
+<input type="submit">Get forecast!</input>
+</form>
 
 <!-- CITY NAME -->
-<h1>{{api.request[0].query}}</h1>
+<h1 class="wi">{{api.request[0].query}}</h1><br>
 <!-- MAIN ICON -->
-<img ng-src="{{api.current_condition[0].weatherIconUrl[0].value}}"
-     style="float:left;padding-right:8px;">
-	
-	Today {{getDay(date.getDay())}}<br>
+<i ng-repeat="code in codes.condition | filter: {code:api.weather[0].weatherCode}" class="wi wi-today {{code.day_icon}}"></i>
+
+	<b>Today</b> {{getDay(date.getDay())}}
+	{{getMonth(date.getMonth())}} {{date.getDate()}}, {{date.getFullYear()}} 
+	<br>
 	<h3>{{api.current_condition[0].temp_C}}&#176;C / 
 	    {{api.current_condition[0].temp_F}}&#176;F</h3><br>
 
-    <img ng-src="{{api.weather[1].weatherIconUrl[0].value}}" style="width:6%;">
+	<i ng-repeat="code in codes.condition | filter: {code:api.weather[1].weatherCode}" class="wi {{code.day_icon}}"></i>
 	Tomorrow, {{days[1].name}}<br>
 	{{days[1].c}}&#176;C / 
 	{{days[1].f}}&#176;F<br><br> 
 	
 	<div ng-repeat="i in range(number) track by $index">
-		<img ng-src="{{api.weather[$index].weatherIconUrl[0].value}}" 
-		     style="width:6%;">
+		<i ng-repeat="code in codes.condition | filter: {code:api.weather[$index].weatherCode}" class="wi {{code.day_icon}}"></i>
+
 		{{days[$index+2].c}}&#176;C / 
 		{{days[$index+2].f}}&#176;F
 		{{days[$index+2].name}}<br>
